@@ -2,12 +2,12 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'node-V22.12.0'
+        nodejs 'sonarnode'
     }
 
     environment {
         NODEJS_HOME = "C:\\Program Files\\nodejs"
-        SONAR_SCANNER_PATH = "C:\\Users\\Pooja\\Downloads\\sonar-scanner-cli-6.2.1.4610-windows-x64\\sonar-scanner-6.2.1.4610-windows-x64\\bin"
+        SONAR_SCANNER_PATH = "C:\Users\Pooja\Downloads\sonar-scanner-cli-6.2.1.4610-windows-x64\sonar-scanner-6.2.1.4610-windows-x64\bin"
     }
 
     stages {
@@ -22,37 +22,37 @@ pipeline {
                 retry(3) {
                     bat '''
                     set PATH=%NODEJS_HOME%;%PATH%
-                    npm install  // Install backend dependencies
+                    npm install
                     '''
                 }
             }
         }
-
-        // Removed Build stage since it's not needed for the backend
-        stage('Start Backend') {
+        
+        stage('Build') {
             steps {
                 bat '''
                 set PATH=%NODEJS_HOME%;%PATH%
-                npm start  // Start the backend server
+                npm run build
                 '''
             }
         }
 
         stage('SonarQube Analysis') {
-            environment {
-                SONAR_TOKEN = credentials('sonar-token')
-            }
-            steps {
-                bat '''
-                set PATH=%SONAR_SCANNER_PATH%;%PATH%
-                sonar-scanner ^
-                -Dsonar.projectKey=sqp_67592e0c9d9c2d53140ecc9ccc85ebba531ca450 ^
-                -Dsonar.sources=. ^
-                -Dsonar.host.url=http://localhost:9000 ^
-                -Dsonar.login=%SONAR_TOKEN%
-                '''
-            }
+        environment {
+        SONAR_TOKEN = credentials('sonar-token')
+    }
+    steps {
+        bat '''
+        set PATH=%SONAR_SCANNER_PATH%;%PATH%
+        sonar-scanner ^
+        -Dsonar.projectKey=sqp_ab20bac1b803ed9362fb4827724b464c4c6effd3 ^
+        -Dsonar.sources=. ^
+        -Dsonar.host.url=http://localhost:9000 ^
+        -Dsonar.login=%SONAR_TOKEN%
+        '''
+    }
         }
+
     }
 
     post {
