@@ -9,13 +9,6 @@ pipeline {
         SONAR_SCANNER_PATH = 'C:/Users/Pooja/Downloads/sonar-scanner-cli-6.2.1.4610-windows-x64/sonar-scanner-6.2.1.4610-windows-x64/bin'
     }
  
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
- 
         stage('Install Dependencies') {
             steps {
                 // Set the PATH and install dependencies using npm
