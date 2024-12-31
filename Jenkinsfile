@@ -22,37 +22,37 @@ pipeline {
                 retry(3) {
                     bat '''
                     set PATH=%NODEJS_HOME%;%PATH%
-                    npm install
+                    npm install  // Install backend dependencies
                     '''
                 }
             }
         }
-        
-        stage('Build') {
+
+        // Removed Build stage since it's not needed for the backend
+        stage('Start Backend') {
             steps {
                 bat '''
                 set PATH=%NODEJS_HOME%;%PATH%
-                npm run build
+                npm start  // Start the backend server
                 '''
             }
         }
 
         stage('SonarQube Analysis') {
-        environment {
-        SONAR_TOKEN = credentials('sonar-token')
-    }
-    steps {
-        bat '''
-        set PATH=%SONAR_SCANNER_PATH%;%PATH%
-        sonar-scanner ^
-        -Dsonar.projectKey=sqp_67592e0c9d9c2d53140ecc9ccc85ebba531ca450 ^
-        -Dsonar.sources=. ^
-        -Dsonar.host.url=http://localhost:9000 ^
-        -Dsonar.login=%SONAR_TOKEN%
-        '''
-    }
+            environment {
+                SONAR_TOKEN = credentials('sonar-token')
+            }
+            steps {
+                bat '''
+                set PATH=%SONAR_SCANNER_PATH%;%PATH%
+                sonar-scanner ^
+                -Dsonar.projectKey=sqp_67592e0c9d9c2d53140ecc9ccc85ebba531ca450 ^
+                -Dsonar.sources=. ^
+                -Dsonar.host.url=http://localhost:9000 ^
+                -Dsonar.login=%SONAR_TOKEN%
+                '''
+            }
         }
-
     }
 
     post {
