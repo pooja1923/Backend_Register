@@ -46,7 +46,7 @@ pipeline {
         bat '''
         set PATH=%SONAR_SCANNER_PATH%;%PATH%
         sonar-scanner ^
-        -Dsonar.projectKey=sqp_ab20bac1b803ed9362fb4827724b464c4c6effd3 ^
+        -Dsonar.projectKey=BackendRegister_PoojaK ^
         -Dsonar.sources=. ^
         -Dsonar.host.url=http://localhost:9000 ^
         -Dsonar.login=%SONAR_TOKEN%
