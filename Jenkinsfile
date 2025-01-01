@@ -28,15 +28,6 @@ pipeline {
             }
         }
         
-        stage('Build') {
-            steps {
-                bat '''
-                set PATH=%NODEJS_HOME%;%PATH%
-                npm run build
-                '''
-            }
-        }
-
         stage('SonarQube Analysis') {
         environment {
         SONAR_TOKEN = credentials('sonar-token')
